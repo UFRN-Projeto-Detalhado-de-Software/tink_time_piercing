@@ -32,7 +32,7 @@ public class FuncionarioService extends GenericService<Funcionario> {
     }
 
     public void createFuncionario(User user) {
-        funcionarioCreator = new ConcreteCreatorTatuador();
+        funcionarioCreator = new ConcreteCreatorBodyPiercer();
         Funcionario funcionario = funcionarioCreator.createFuncionario();
         funcionario.setUser(user);
         agendaService.createAgenda(funcionario);
