@@ -2,7 +2,7 @@ package com.eliasfs06.tinktime.model.dto;
 
 import com.eliasfs06.tinktime.model.Person;
 import com.eliasfs06.tinktime.model.User;
-import com.eliasfs06.tinktime.model.UserRole;
+import com.eliasfs06.tinktime.model.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

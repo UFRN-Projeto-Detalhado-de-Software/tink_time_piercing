@@ -1,5 +1,7 @@
 package com.eliasfs06.tinktime.model;
 
+import com.eliasfs06.tinktime.model.enums.Joia;
+import com.eliasfs06.tinktime.model.enums.LocalPiercing;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,6 +25,10 @@ public class PropostaIdeia extends BaseEntity {
     private Agendamento agendamento;
 
     private Integer numeroSessoes;
+
+    private LocalPiercing localPiercing;
+
+    private Joia joia;
 
 
     @Override
@@ -74,4 +80,19 @@ public class PropostaIdeia extends BaseEntity {
         this.numeroSessoes = numeroSessoes;
     }
 
+    public LocalPiercing getLocalPiercing() {
+        return localPiercing;
+    }
+
+    public void setLocalPiercing(LocalPiercing localPiercing) {
+        this.localPiercing = localPiercing;
+    }
+
+    public Joia getJoia() {
+        return joia;
+    }
+
+    public void setJoia(Joia joia) {
+        this.joia = joia;
+    }
 }

@@ -1,7 +1,7 @@
 package com.eliasfs06.tinktime.model;
 
+import com.eliasfs06.tinktime.model.enums.StatusHorario;
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalTime;
 
