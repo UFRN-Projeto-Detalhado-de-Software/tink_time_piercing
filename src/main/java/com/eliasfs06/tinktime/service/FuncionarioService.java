@@ -1,6 +1,7 @@
 package com.eliasfs06.tinktime.service;
 
 import com.eliasfs06.tinktime.model.*;
+import com.eliasfs06.tinktime.model.dto.BodyPiercerDTO;
 import com.eliasfs06.tinktime.model.dto.FuncionarioDTO;
 import com.eliasfs06.tinktime.model.dto.UserDTO;
 import com.eliasfs06.tinktime.repository.FuncionaroRepository;
@@ -27,8 +28,8 @@ public class FuncionarioService extends GenericService<Funcionario> {
     }
 
     public FuncionarioDTO findByUser(User user) {
-        Funcionario funcionario = repository.findByUser(user);
-        return new FuncionarioDTO(funcionario);
+        BodyPiercer funcionario = (BodyPiercer) repository.findByUser(user);
+        return new BodyPiercerDTO(funcionario);
     }
 
     public void createFuncionario(User user) {

@@ -1,6 +1,7 @@
 package com.eliasfs06.tinktime.controller;
 
 import com.eliasfs06.tinktime.model.*;
+import com.eliasfs06.tinktime.model.dto.BodyPiercerDTO;
 import com.eliasfs06.tinktime.model.dto.FuncionarioDTO;
 import com.eliasfs06.tinktime.model.dto.FormCadastroHorarios;
 import com.eliasfs06.tinktime.repository.GenericRepository;
@@ -44,25 +45,28 @@ public class FuncionarioController extends GenericController<Funcionario> {
     @GetMapping("/profile")
     public String getProfile(Model model){
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        FuncionarioDTO funcionario = funcionarioService.findByUser(user);
+        BodyPiercerDTO bodyPiercer = (BodyPiercerDTO) funcionarioService.findByUser(user);
 
-        if(funcionario.getId() == null){
-            funcionario.setUser(user);
+        if(bodyPiercer.getId() == null){
+            bodyPiercer.setUser(user);
         }
 
-        model.addAttribute("funcionario", funcionario);
+        model.addAttribute("bodyPiercer", bodyPiercer);
+        model.addAttribute("listaAreas", AreasAplicacao.getAllAreas());
+        model.addAttribute("listaMateriais", MaterialJoia.getAllMateriais());
         return "funcionario/profile";
     }
 
     @PostMapping("/profile")
-    public String saveProfile(@ModelAttribute("funcionario") @Valid FuncionarioDTO funcionario, BindingResult br, Model model){
+    public String saveProfile(@ModelAttribute("bodyPiercer") @Valid BodyPiercer bodyPiercer, BindingResult br, Model model){
         if(br.hasErrors()){
             return "funcionario/profile";
         }
 
-        funcionarioService.save(funcionario.toFuncionario());
-        model.addAttribute("funcionario", funcionario);
-        model.addAttribute("allStyles", TattoStyle.getAllStyles());
+        funcionarioService.save(bodyPiercer);
+        model.addAttribute("bodyPiercer", bodyPiercer);
+        model.addAttribute("listaAreas", AreasAplicacao.getAllAreas());
+        model.addAttribute("listaMateriais", MaterialJoia.getAllMateriais());
 
         return "funcionario/profile";
     }

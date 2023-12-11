@@ -21,12 +21,22 @@
                     <tr>
                         <th>Nome</th>
                         <th>Descrição</th>
+                        <th>Estúdio</th>
+                        <th>Áreas de Aplicação</th>
+                        <th>Materiais de Joias Disponíveis</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="funcionario : ${funcionarioList}">
                         <td th:text="${funcionario.user.person.name}"></td>
                         <td th:text="${funcionario.aboutMe}"></td>
+                        <td th:text="${funcionario.estudio}"></td>
+                        <td>
+                            <span th:each="area : ${funcionario.areasAplicacao}" th:text="${area.description} + '; '"></span>
+                        </td>
+                        <td>
+                            <span th:each="material : ${funcionario.materiaisJoia}" th:text="${material.description} + '; '"></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
