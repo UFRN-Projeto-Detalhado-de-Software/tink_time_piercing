@@ -4,7 +4,7 @@ import com.eliasfs06.tinktime.model.*;
 import com.eliasfs06.tinktime.model.dto.BodyPiercerDTO;
 import com.eliasfs06.tinktime.model.dto.FuncionarioDTO;
 import com.eliasfs06.tinktime.model.dto.UserDTO;
-import com.eliasfs06.tinktime.repository.FuncionaroRepository;
+import com.eliasfs06.tinktime.repository.FuncionarioRepository;
 import com.eliasfs06.tinktime.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 public class FuncionarioService extends GenericService<Funcionario> {
 
     @Autowired
-    private FuncionaroRepository repository;
+    private FuncionarioRepository repository;
 
     @Autowired
     private AgendaService agendaService;
@@ -32,12 +32,12 @@ public class FuncionarioService extends GenericService<Funcionario> {
         return new BodyPiercerDTO(funcionario);
     }
 
-    public void createFuncionario(User user) {
+    public Funcionario createFuncionario(User user) {
         funcionarioCreator = new ConcreteCreatorBodyPiercer();
         Funcionario funcionario = funcionarioCreator.createFuncionario();
         funcionario.setUser(user);
         agendaService.createAgenda(funcionario);
-        save(funcionario);
+        return save(funcionario);
     }
 
     public List<UserDTO> getListUserDTOFuncionarios(List<Funcionario> funcionarios){

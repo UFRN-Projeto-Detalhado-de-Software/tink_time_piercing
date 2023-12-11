@@ -1,4 +1,4 @@
-package com.eliasfs06.tinktime.model;
+package com.eliasfs06.tinktime.model.enums;
 
 public enum UserRole {
 

@@ -21,6 +21,8 @@
                 <tr>
                     <th>Descricao</th>
                     <th>Cliente</th>
+                    <th>Local</th>
+                    <th>Jóia</th>
                     <th>Agendamento</th>
                 </tr>
                 </thead>
@@ -30,7 +32,9 @@
                     <td th:text="${proposta.cliente.person.name}"></td>
                     <td th:if="${proposta.agendamento != null}"
                         th:text="'Dia ' + ${proposta.agendamento.data} + ' às ' + ${proposta.agendamento.horarios.get(0).getHoraInicio()}"></td>
-                    <td th:if="${proposta.agendamento == null}"><a th:href="@{/proposta-tatuagem/buscar-horarios/{id}(id=${proposta.id})}">Agendar</a></td>
+                    <td th:text="${proposta.localPiercing.local}"></td>
+                    <td th:text="${proposta.joia.joia}"></td>
+                    <td th:if="${proposta.agendamento == null}"><a th:href="@{/proposta-ideia/buscar-horarios/{id}(id=${proposta.id})}">Agendar</a></td>
                 </tr>
                 </tbody>
             </table>

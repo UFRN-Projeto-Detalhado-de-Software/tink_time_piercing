@@ -2,7 +2,7 @@ package com.eliasfs06.tinktime.service;
 
 import com.eliasfs06.tinktime.model.DiaAgenda;
 import com.eliasfs06.tinktime.model.Horario;
-import com.eliasfs06.tinktime.model.StatusHorario;
+import com.eliasfs06.tinktime.model.enums.StatusHorario;
 import com.eliasfs06.tinktime.model.dto.FormCadastroHorarios;
 import com.eliasfs06.tinktime.repository.GenericRepository;
 import com.eliasfs06.tinktime.repository.HorarioRepository;

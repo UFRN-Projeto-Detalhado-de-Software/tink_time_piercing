@@ -3,6 +3,9 @@ package com.eliasfs06.tinktime.controller;
 import com.eliasfs06.tinktime.exceptionsHandler.BusinessException;
 import com.eliasfs06.tinktime.model.*;
 import com.eliasfs06.tinktime.model.dto.*;
+import com.eliasfs06.tinktime.model.enums.Joia;
+import com.eliasfs06.tinktime.model.enums.LocalPiercing;
+import com.eliasfs06.tinktime.model.enums.StatusHorario;
 import com.eliasfs06.tinktime.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,16 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/proposta-tatuagem")
-public class PropostaTatuagemController {
+@RequestMapping("/proposta-ideia")
+public class PropostaIdeiaController {
 
     @Autowired
-    private PropostaTatuagemService propostaTatuagemService;
+    private PropostaIdeiaService propostaIdeiaService;
 
     @Autowired
     private FuncionarioService funcionarioService;
@@ -44,9 +48,9 @@ public class PropostaTatuagemController {
     public ModelAndView listTatuagens(){
         ModelAndView modelAndView = new ModelAndView();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<PropostaTatuagem> propostasList = propostaTatuagemService.getPropostasByRole(user);
+        List<PropostaIdeia> propostasList = propostaIdeiaService.getPropostasByRole(user);
         modelAndView.addObject("propostasList", propostasList);
-        modelAndView.setViewName("propostaTatuagem/list");
+        modelAndView.setViewName("propostaIdeia/list");
         return modelAndView;
     }
 
@@ -55,46 +59,50 @@ public class PropostaTatuagemController {
     public ModelAndView form() {
         ModelAndView modelAndView = new ModelAndView();
         List<Funcionario> funcionarios = funcionarioService.listActiveFuncionarios();
-        modelAndView.addObject("newTatuagem", new PropostaTatuagemDTO());
+        modelAndView.addObject("newIdeia", new PropostaIdeiaDTO());
         modelAndView.addObject("funcionarios", funcionarios);
-        modelAndView.setViewName("propostaTatuagem/form");
+        modelAndView.addObject("joias", Joia.getAllJoia());
+        modelAndView.addObject("locais", LocalPiercing.getAllLocal());
+        modelAndView.setViewName("propostaIdeia/form");
         return modelAndView;
     }
 
     @PostMapping("/create")
     public String create(@RequestParam(value="descricao", required = true) String Descricao, @RequestParam(value="tatuador", required = true) String Funcionario,
-                         Model model) throws BusinessException {
+                         String localPiercing, String joia, Model model) throws BusinessException {
         try {
             User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User funcionario = userService.findByID(Long.parseLong(Funcionario));
-            propostaTatuagemService.create(new PropostaTatuagemDTO(new UserDTO(user), new UserDTO(funcionario), Descricao));
+            propostaIdeiaService.create(new PropostaIdeiaDTO(new UserDTO(user), new UserDTO(funcionario), Descricao, LocalPiercing.valueOf(localPiercing), Joia.valueOf(joia)));
         } catch (BusinessException e) {
             return "redirect:/index";
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
         return "redirect:/index";
     }
 
     @GetMapping("/getPropostasByCliente")
     @ResponseBody
-    public List<PropostaTatuagem> getPropostasByCliente(@RequestParam Long clienteId) {
-        return propostaTatuagemService.listPropostasByClienteID(clienteId);
+    public List<PropostaIdeia> getPropostasByCliente(@RequestParam Long clienteId) {
+        return propostaIdeiaService.listPropostasByClienteID(clienteId);
     }
 
     @GetMapping("/buscar-horarios/{id}")
     public String agendarTatuagem(@PathVariable Long id, Model model){
-        PropostaTatuagem propostaTatuagem = propostaTatuagemService.get(id);
-        FuncionarioDTO funcionarioDTO = funcionarioService.findByUser(propostaTatuagem.getTatuador());
+        PropostaIdeia propostaIdeia = propostaIdeiaService.get(id);
+        FuncionarioDTO funcionarioDTO = funcionarioService.findByUser(propostaIdeia.getTatuador());
         Funcionario funcionario = funcionarioDTO.toFuncionario();
         Agenda agenda = agendaService.findByFuncionario(funcionario);
 
-        List<HorariosTatuagem> horariosDisponveis = agendaService.sugerirHorarios(funcionario, propostaTatuagem.getNumeroSessoes());
-        List<HorariosTatuagem> horariosDisponiveisFormatados = agendaService.formatarHorariosDisponiveis(horariosDisponveis, propostaTatuagem.getNumeroSessoes());
+        List<HorariosTatuagem> horariosDisponveis = agendaService.sugerirHorarios(funcionario, propostaIdeia.getNumeroSessoes());
+        List<HorariosTatuagem> horariosDisponiveisFormatados = agendaService.formatarHorariosDisponiveis(horariosDisponveis, propostaIdeia.getNumeroSessoes());
 
         model.addAttribute("horarios", horariosDisponiveisFormatados);
         model.addAttribute("agendaId", agenda.getId());
         model.addAttribute("propostaId", id);
         model.addAttribute("agendamento", new AgendamentoDto());
-        return "/propostaTatuagem/agendar-tatuagem";
+        return "/propostaIdeia/agendar-ideia";
     }
 
     @PostMapping("/agendar-tatuagem/{idProposta}/{idAgenda}")
@@ -114,9 +122,9 @@ public class PropostaTatuagemController {
         agendamento.setData(diaAgenda.getDia());
         agendamentoService.save(agendamento);
 
-        PropostaTatuagem propostaTatuagem = propostaTatuagemService.get(idProposta);
-        propostaTatuagem.setAgendamento(agendamento);
-        propostaTatuagemService.save(propostaTatuagem);
+        PropostaIdeia propostaIdeia = propostaIdeiaService.get(idProposta);
+        propostaIdeia.setAgendamento(agendamento);
+        propostaIdeiaService.save(propostaIdeia);
 
         return "redirect:/index";
     }
