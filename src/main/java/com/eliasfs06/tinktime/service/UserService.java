@@ -1,9 +1,8 @@
 package com.eliasfs06.tinktime.service;
 
-import com.eliasfs06.tinktime.model.Funcionario;
 import com.eliasfs06.tinktime.model.Person;
 import com.eliasfs06.tinktime.model.User;
-import com.eliasfs06.tinktime.model.UserRole;
+import com.eliasfs06.tinktime.model.enums.UserRole;
 import com.eliasfs06.tinktime.model.dto.RegisterDTO;
 import com.eliasfs06.tinktime.repository.GenericRepository;
 import com.eliasfs06.tinktime.repository.UserRepository;

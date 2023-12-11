@@ -29,6 +29,26 @@
                     <input type="text" id="descricao" name="descricao" class="form-control" th:field="*{descricao}" />
                     <span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="text-danger"></span>
                 </div>
+                <div class="form-group">
+                    <label for="localPiercing">Local de aplicação:</label>
+                    <select id="localPiercing" name="localPiercing" class="form-select" th:field="*{localPiercing}">
+                        <option value="">-- Selecione --</option>
+                        <option th:each="local : ${locais}"
+                                th:value="${local}"
+                                th:text="${local.local}"></option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('localPiercing')}" th:errors="*{localPiercing}" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="joia">Joia:</label>
+                    <select id="joia" name="joia" class="form-select" th:field="*{joia}">
+                        <option value="">-- Selecione --</option>
+                        <option th:each="joia : ${joias}"
+                                th:value="${joia}"
+                                th:text="${joia.joia}"></option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('joia')}" th:errors="*{joia}" class="text-danger"></span>
+                </div>
                 <button type="submit" class="btn btn-success">Submit</button>
             </form>
         </div>

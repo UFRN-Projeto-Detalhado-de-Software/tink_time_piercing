@@ -2,6 +2,7 @@ package com.eliasfs06.tinktime.service;
 
 import com.eliasfs06.tinktime.model.*;
 import com.eliasfs06.tinktime.model.dto.HorariosTatuagem;
+import com.eliasfs06.tinktime.model.enums.StatusHorario;
 import com.eliasfs06.tinktime.repository.AgendaRepository;
 import com.eliasfs06.tinktime.repository.GenericRepository;
 import org.springframework.beans.factory.annotation.Autowired;
